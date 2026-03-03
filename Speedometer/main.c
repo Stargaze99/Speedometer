@@ -16,7 +16,7 @@
 #include <util/delay.h>
 
 /* NMEA radbuffer */
-#define LINE_BUF_SIZE 128
+#define LINE_BUF_SIZE 160
 static char line_buf[LINE_BUF_SIZE];
 static uint8_t line_pos = 0;
 
