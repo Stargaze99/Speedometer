@@ -126,10 +126,16 @@
     <Compile Include="drivers\uart.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\ubx.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\config.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\uart.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\ubx.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

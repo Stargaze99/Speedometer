@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * uart.c
  *
  * Created: 2026-02-12 16:04:51
@@ -13,7 +13,7 @@
 #include <stdbool.h>
 
 
-/* RX ringbuffer-storlek: måste vara 2^n (64, 128, 256...) */
+/* RX ringbuffer-storlek: mÃ¥ste vara 2^n (64, 128, 256)  */
 #define RX_BUF_SIZE 256
 
 static volatile uint8_t rx_buf[RX_BUF_SIZE];
@@ -45,13 +45,13 @@ void uart0_init(uint32_t baud)
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 }
 
-/* RX interrupt: triggas när ett byte mottagits */
+/* RX interrupt: triggas nÃ¤r ett byte mottagits */
 ISR(USART_RX_vect)
 {
     uint8_t b = UDR0;
     uint8_t next = rx_next(rx_head);
 
-    /* Om bufferten inte är full: spara */
+    /* Om bufferten inte Ã¤r full: spara */
     if (next != rx_tail) {
         rx_buf[rx_head] = b;
         rx_head = next;
@@ -77,9 +77,9 @@ bool uart0_read_nonblocking(uint8_t *out)
 
 void uart0_write(uint8_t b)
 {
-    /* Vänta tills sändbufferten är tom */
+    /* VÃ¤nta tills sÃ¤ndbufferten Ã¤r tom */
     while (!(UCSR0A & (1 << UDRE0))) {
-        /* väntar */
+        /* vÃ¤ntar */
     }
     UDR0 = b;
 }

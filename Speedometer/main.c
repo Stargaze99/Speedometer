@@ -1,4 +1,4 @@
-/*
+Ôªø/*
  * Speedometer.c
  *
  * Created: 2026-02-12 14:19:38
@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "uart.h"
+#include "ubx.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -15,17 +16,13 @@
 #include <stdbool.h>
 #include <util/delay.h>
 
-/* NMEA radbuffer */
-#define LINE_BUF_SIZE 160
-static char line_buf[LINE_BUF_SIZE];
-static uint8_t line_pos = 0;
 
 static void leds_init(void)
 {
-    /* PD2..PD7 som output (LED). PD0/PD1 l‰mnas till UART. */
+    /* PD2..PD7 som output (LED). PD0/PD1 l√§mnas till UART. */
     DDRD |= 0b11111100;
 
-    /* Pull-up pÂ RX (PD0) sÂ pinnen inte flyter om kabel glappar */
+    /* Pull-up p√• RX (PD0) s√• pinnen inte flyter om kabel glappar */
     PORTD |= (1 << PD0);
 }
 
@@ -41,97 +38,76 @@ static void led_set(uint8_t pd_pin, bool on)
     else     PORTD &= ~(1 << pd_pin);
 }
 
-/* RMC status ‰r f‰lt 2: $GNRMC,<time>,<A/V>,... */
-static char rmc_status_char(const char *line)
-{
-    uint8_t commas = 0;
-    for (uint16_t i = 0; line[i] != '\0'; i++) {
-        if (line[i] == ',') {
-            commas++;
-            if (commas == 2) {
-                return line[i + 1]; /* 'A' eller 'V' */
-            }
-        }
-    }
-    return '?';
-}
+volatile int16_t roll_deg, pitch_deg, yaw_deg;
+
+volatile uint16_t g_nav_att_count = 0;
+
+uint8_t test = 0;
 
 int main(void)
 {
     leds_init();
 
     uart0_init(UART0_BAUD);
-    sei(); /* behˆvs fˆr att ISR i uart.c ska kˆras */
+    sei(); /* beh√∂vs f√∂r att ISR i uart.c ska k√∂ras */
+    
+    g_roll_1e5  = 0;
+    g_pitch_1e5 = 0;
+    g_yaw_1e5   = 0;
 
-    /* Start: blinka PD7 tre gÂnger */
+    /* Start: blinka PD7 tre g√•nger */
     for (uint8_t i = 0; i < 3; i++) {
         led_toggle(PD7);
         _delay_ms(150);
         led_toggle(PD7);
-        _delay_ms(150);
+        _delay_ms(150); 
     }
 
-    uint16_t hb = 0;
-    uint8_t byte_div = 0; /* gˆr PD2 blink synlig (inte flimmer) */
+    /* L√•t M8U boota lite */
+    _delay_ms(500);
 
+    /*
+     * Viktigt:
+     * F√∂r att dessa kommandon ska n√• modulen m√•ste PD1 (TX) vara kopplad till GPS RX.
+     * Om GPS RX √§r 3.3V-only: anv√§nd niv√•delare/level-shift fr√•n PD1.
+     */
+    ubx_disable_common_nmea();     /* valfritt men rekommenderas (minskar spam) */
+    ubx_init_enable_nav_att(1);    /* be M8U skicka NAV-ATT (roll/pitch/yaw) */
+
+    uint16_t hb = 0;
+    
     while (1) {
         uint8_t b;
 
-        /* PD6 = heartbeat (programmet lever) */
-        hb++;
-        if (hb >= 200) {          /* ~200 ms */
-            hb = 0;
-            led_toggle(PD6);
-        }
-
-        /* L‰s bytes frÂn ringbuffer (fylls av ISR) */
-        while (uart0_read_nonblocking(&b)) {
-
-            /* PD2: blink ibland n‰r bytes kommer (inte varje byte) */
-            byte_div++;
-            if ((byte_div & 0x1F) == 0) { /* var 32:e byte */
-                led_toggle(PD2);
-            }
-
-            /* NMEA brukar vara \r\n */
-            if (b == '\r') {
-                continue;
-            }
-
-            if (b == '\n') {
-                /* Hel rad klar */
-                line_buf[line_pos] = '\0';
-                line_pos = 0;
-
-                /* PD3: rad klar */
-                led_toggle(PD3);
-
-                /* PD4: raden bˆrjar med '$' (NMEA) */
-                if (line_buf[0] == '$') {
-                    led_toggle(PD4);
+                /* L√§s alla bytes fr√•n UART ringbuffer och mata UBX-parsern */
+                while (uart0_read_nonblocking(&b)) {
+                    ubx_parse_byte(b);
+                    g_nav_att_count++; 
                 }
 
-                /* PD5: RMC? (NEO-8 brukar vara GN) */
-                bool is_rmc = (strncmp(line_buf, "$GNRMC", 6) == 0) ||
-                (strncmp(line_buf, "$GPRMC", 6) == 0);
-                if (is_rmc) {
-                    led_toggle(PD5);
-
-                    /* PD7 ON om fix ‰r valid (A), OFF annars */
-                    led_set(PD7, (rmc_status_char(line_buf) == 'A'));
+                /*
+                 * ubx.c uppdaterar g_roll_1e5/g_pitch_1e5/g_yaw_1e5 n√§r NAV-ATT kommer.
+                 * g_att_valid anv√§nds h√§r som ‚Äúny-data-flagga‚Äù.
+                 */
+                if (g_att_valid) {
+                    g_att_valid = 0;       /* kvittera s√• vi f√•r en puls varje g√•ng */
+                    
+                    roll_deg  = ubx_deg_from_1e5(g_roll_1e5);
+                    pitch_deg = ubx_deg_from_1e5(g_pitch_1e5);
+                    yaw_deg   = ubx_deg_from_1e5(g_yaw_1e5);
+                    
+                    led_toggle(PD2);       /* PD2 blink = fick NAV-ATT */
+                    test = 5;
                 }
+                
 
-                } else {
-                /* Bygg rad */
-                if (line_pos < (LINE_BUF_SIZE - 1)) {
-                    line_buf[line_pos++] = (char)b;
-                    } else {
-                    /* Overflow: kasta raden */
-                    line_pos = 0;
-                    led_toggle(PD5); /* anv‰nd PD5 som "overflow-varning" */
+
+                /* Heartbeat PD6 ~200ms */
+                hb++;
+                if (hb >= 200) {
+                    hb = 0;
+                    led_toggle(PD6);
                 }
-            }
-        }
 
         _delay_ms(1);
     }
