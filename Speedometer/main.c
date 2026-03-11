@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "uart.h"
+#include "gps_cfg.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -70,6 +71,8 @@ int main(void)
         led_toggle(PD7);
         _delay_ms(150);
     }
+    
+    gps_cfg_profile(1);
 
     uint16_t hb = 0;
     uint8_t byte_div = 0; /* gör PD2 blink synlig (inte flimmer) */

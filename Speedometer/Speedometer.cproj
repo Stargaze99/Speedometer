@@ -123,10 +123,16 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="drivers\gps_cfg.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\uart.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\config.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\gps_cfg.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\uart.h">
