@@ -42,6 +42,8 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../drivers/gps_cfg.c \
 ../drivers/uart.c \
+../drivers/ubx_tx.c \
+../drivers/ubx_ver.c \
 ../main.c
 
 
@@ -54,21 +56,29 @@ ASM_SRCS +=
 OBJS +=  \
 drivers/gps_cfg.o \
 drivers/uart.o \
+drivers/ubx_tx.o \
+drivers/ubx_ver.o \
 main.o
 
 OBJS_AS_ARGS +=  \
 drivers/gps_cfg.o \
 drivers/uart.o \
+drivers/ubx_tx.o \
+drivers/ubx_ver.o \
 main.o
 
 C_DEPS +=  \
 drivers/gps_cfg.d \
 drivers/uart.d \
+drivers/ubx_tx.d \
+drivers/ubx_ver.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
 drivers/gps_cfg.d \
 drivers/uart.d \
+drivers/ubx_tx.d \
+drivers/ubx_ver.d \
 main.d
 
 OUTPUT_FILE_PATH +=Speedometer.elf
@@ -93,6 +103,20 @@ drivers/gps_cfg.o: ../drivers/gps_cfg.c
 	
 
 drivers/uart.o: ../drivers/uart.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include" -I"..\/include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+drivers/ubx_tx.o: ../drivers/ubx_tx.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include" -I"..\/include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+drivers/ubx_ver.o: ../drivers/ubx_ver.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include" -I"..\/include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

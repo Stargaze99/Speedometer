@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include "uart.h"
+#include "ubx_tx.h"
 
 void gps_cfg_profile(uint8_t profile);
 

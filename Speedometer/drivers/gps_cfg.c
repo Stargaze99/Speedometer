@@ -7,6 +7,7 @@
 
 #include "gps_cfg.h"
 
+
 /* u-blox NMEA message class */
 #define UBX_NMEA_CLASS  0xF0
 
@@ -25,20 +26,22 @@
 #define NMEA_RMC_ID 0x04
 #define NMEA_VTG_ID 0x05
 
+/*
 static void ubx_checksum(uint8_t a, uint8_t *cka, uint8_t *ckb){
     
     *cka = (uint8_t) (*cka + a);
     *ckb = (uint8_t) (*cka + *ckb);
-}
+}*/
+/*
 
-/*Exmpel UBX: B5 62 <CLS> <ID> <LEN_L> <LEN_H> <PAYLOAD...> <CK_A> <CK_B>*/
+/ *Exmpel UBX: B5 62 <CLS> <ID> <LEN_L> <LEN_H> <PAYLOAD...> <CK_A> <CK_B>* /
 static void ubx_send(uint8_t cls, uint8_t id, uint16_t len, const uint8_t *payload){
     
-    /*init checksum*/
+    / *init checksum* /
     uint8_t cka = 0;
     uint8_t ckb = 0;
     
-    /*Start sync*/
+    / *Start sync* /
     uart0_write(0xB5);
     uart0_write(0x62);
     
@@ -48,11 +51,11 @@ static void ubx_send(uint8_t cls, uint8_t id, uint16_t len, const uint8_t *paylo
     uart0_write(id);
     ubx_checksum(id, &cka, &ckb);
     
-    /*Låg*/
+    / *Låg* /
     uart0_write((uint8_t) (len & 0xFF));
     ubx_checksum((uint8_t) (len & 0xFF), &cka, &ckb);
     
-    /*hög*/
+    / *hög* /
     uart0_write((uint8_t) (len >> 8));
     ubx_checksum((uint8_t) (len >> 8), &cka, &ckb);
     
@@ -65,7 +68,7 @@ static void ubx_send(uint8_t cls, uint8_t id, uint16_t len, const uint8_t *paylo
     uart0_write(cka);
     uart0_write(ckb);
     
-}
+}*/
 
 
 static void ubx_cfg_msg(uint8_t msgClass, uint8_t msgID, uint8_t rate)
@@ -88,4 +91,10 @@ void gps_cfg_profile(uint8_t profile){
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_VTG_ID, 1); /* VTG ON (1x per nav) */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GGA_ID, 1); /* GGA ON */
     }
+}
+
+
+void ubx_ver_check(void){
+    /* UBX-MON-VER poll: class 0x0A id 0x04, length=0, no payload */
+    ubx_send(0x0A, 0x04, 0, 0);
 }

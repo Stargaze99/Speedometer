@@ -4,12 +4,23 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
                               drivers/uart.o (__udivmodsi4)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
                               C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o (exit)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+                              drivers/ubx_ver.o (__tablejump2__)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_copy_data.o)
                               main.o (__do_copy_data)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_clear_bss.o)
                               drivers/uart.o (__do_clear_bss)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+                              drivers/ubx_ver.o (__umulhisi3)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strncmp.o)
                               main.o (strncmp)
+
+Allocating common symbols
+Common symbol       size              file
+
+ubx_ext             0xba              drivers/ubx_ver.o
+ubx_sw_version      0x1f              drivers/ubx_ver.o
+ubx_hw_version      0xb               drivers/ubx_ver.o
 
 Discarded input sections
 
@@ -18,9 +29,56 @@ Discarded input sections
  .text          0x00000000        0x0 drivers/gps_cfg.o
  .data          0x00000000        0x0 drivers/gps_cfg.o
  .bss           0x00000000        0x0 drivers/gps_cfg.o
+ .text.ubx_ver_check
+                0x00000000       0x12 drivers/gps_cfg.o
  .text          0x00000000        0x0 drivers/uart.o
  .data          0x00000000        0x0 drivers/uart.o
  .bss           0x00000000        0x0 drivers/uart.o
+ .text          0x00000000        0x0 drivers/ubx_tx.o
+ .data          0x00000000        0x0 drivers/ubx_tx.o
+ .bss           0x00000000        0x0 drivers/ubx_tx.o
+ .text          0x00000000        0x0 drivers/ubx_ver.o
+ .data          0x00000000        0x0 drivers/ubx_ver.o
+ .bss           0x00000000        0x0 drivers/ubx_ver.o
+ .text.ck_update
+                0x00000000       0x12 drivers/ubx_ver.o
+ .text.reset_parser
+                0x00000000       0x2e drivers/ubx_ver.o
+ .text.store_monver_byte
+                0x00000000       0x88 drivers/ubx_ver.o
+ .text.finalize_strings
+                0x00000000       0x22 drivers/ubx_ver.o
+ .text.ubx_ver_poll
+                0x00000000       0x44 drivers/ubx_ver.o
+ .text.ubx_ver_parse_byte
+                0x00000000      0x19a drivers/ubx_ver.o
+ .progmem.gcc_sw_table.ubx_ver_parse_byte
+                0x00000000       0x12 drivers/ubx_ver.o
+ .bss.is_monver
+                0x00000000        0x1 drivers/ubx_ver.o
+ .bss.rx_cka    0x00000000        0x1 drivers/ubx_ver.o
+ .bss.ckb       0x00000000        0x1 drivers/ubx_ver.o
+ .bss.cka       0x00000000        0x1 drivers/ubx_ver.o
+ .bss.pos       0x00000000        0x2 drivers/ubx_ver.o
+ .bss.len       0x00000000        0x2 drivers/ubx_ver.o
+ .bss.id        0x00000000        0x1 drivers/ubx_ver.o
+ .bss.cls       0x00000000        0x1 drivers/ubx_ver.o
+ .bss.st        0x00000000        0x1 drivers/ubx_ver.o
+ .bss.ubx_ext_count
+                0x00000000        0x1 drivers/ubx_ver.o
+ .bss.ubx_ver_ready
+                0x00000000        0x1 drivers/ubx_ver.o
+ .debug_info    0x00000000      0x4a2 drivers/ubx_ver.o
+ .debug_abbrev  0x00000000      0x1af drivers/ubx_ver.o
+ .debug_loc     0x00000000      0x18e drivers/ubx_ver.o
+ .debug_aranges
+                0x00000000       0x48 drivers/ubx_ver.o
+ .debug_ranges  0x00000000       0x38 drivers/ubx_ver.o
+ .debug_line    0x00000000      0x34f drivers/ubx_ver.o
+ .debug_str     0x00000000      0x29c drivers/ubx_ver.o
+ .comment       0x00000000       0x31 drivers/ubx_ver.o
+ .debug_frame   0x00000000       0x88 drivers/ubx_ver.o
+ COMMON         0x00000000       0xe4 drivers/ubx_ver.o
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
@@ -54,6 +112,22 @@ Discarded input sections
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .text.libgcc.fixed
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .text.libgcc   0x00000000        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_copy_data.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_copy_data.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_copy_data.o)
@@ -86,6 +160,22 @@ Discarded input sections
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc.fixed
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_clear_bss.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .text.libgcc.mul
+                0x00000000       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strncmp.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strncmp.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strncmp.o)
@@ -108,6 +198,8 @@ Address of section .data set to 0x800100
 LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
 LOAD drivers/gps_cfg.o
 LOAD drivers/uart.o
+LOAD drivers/ubx_tx.o
+LOAD drivers/ubx_ver.o
 LOAD main.o
 START GROUP
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a
@@ -304,30 +396,31 @@ END GROUP
                 0x000000a2                __vector_20
                 0x000000a6                . = ALIGN (0x2)
  *(.text.*)
- .text.ubx_checksum
-                0x000000a6       0x12 drivers/gps_cfg.o
- .text.ubx_send
-                0x000000b8       0xea drivers/gps_cfg.o
  .text.ubx_cfg_msg
-                0x000001a2       0x30 drivers/gps_cfg.o
+                0x000000a6       0x30 drivers/gps_cfg.o
  .text.gps_cfg_profile
-                0x000001d2       0x42 drivers/gps_cfg.o
-                0x000001d2                gps_cfg_profile
+                0x000000d6       0x42 drivers/gps_cfg.o
+                0x000000d6                gps_cfg_profile
  .text.uart0_init
-                0x00000214       0x7a drivers/uart.o
-                0x00000214                uart0_init
+                0x00000118       0x7a drivers/uart.o
+                0x00000118                uart0_init
  .text.__vector_18
-                0x0000028e       0x4a drivers/uart.o
-                0x0000028e                __vector_18
+                0x00000192       0x4a drivers/uart.o
+                0x00000192                __vector_18
  .text.uart0_available
-                0x000002d8       0x12 drivers/uart.o
-                0x000002d8                uart0_available
+                0x000001dc       0x12 drivers/uart.o
+                0x000001dc                uart0_available
  .text.uart0_read_nonblocking
-                0x000002ea       0x2c drivers/uart.o
-                0x000002ea                uart0_read_nonblocking
+                0x000001ee       0x2c drivers/uart.o
+                0x000001ee                uart0_read_nonblocking
  .text.uart0_write
-                0x00000316        0xe drivers/uart.o
-                0x00000316                uart0_write
+                0x0000021a        0xe drivers/uart.o
+                0x0000021a                uart0_write
+ .text.ubx_checksum
+                0x00000228       0x12 drivers/ubx_tx.o
+ .text.ubx_send
+                0x0000023a       0xea drivers/ubx_tx.o
+                0x0000023a                ubx_send
  .text.leds_init
                 0x00000324        0xe main.o
  .text.led_toggle
@@ -447,6 +540,7 @@ END GROUP
  .comment       0x00000000       0x30 drivers/gps_cfg.o
                                  0x31 (size before relaxing)
  .comment       0x00000030       0x31 drivers/uart.o
+ .comment       0x00000030       0x31 drivers/ubx_tx.o
  .comment       0x00000030       0x31 main.o
 
 .note.gnu.avr.deviceinfo
@@ -469,59 +563,68 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xb8
+.debug_aranges  0x00000000       0xd8
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x38 drivers/gps_cfg.o
+                0x00000000       0x30 drivers/gps_cfg.o
  .debug_aranges
-                0x00000038       0x40 drivers/uart.o
+                0x00000030       0x40 drivers/uart.o
  .debug_aranges
-                0x00000078       0x40 main.o
+                0x00000070       0x28 drivers/ubx_tx.o
+ .debug_aranges
+                0x00000098       0x40 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x10ff
+.debug_info     0x00000000     0x11bd
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x435 drivers/gps_cfg.o
- .debug_info    0x00000a29      0x21c drivers/uart.o
- .debug_info    0x00000c45      0x4ba main.o
+ .debug_info    0x000005f4      0x22a drivers/gps_cfg.o
+ .debug_info    0x0000081e      0x21c drivers/uart.o
+ .debug_info    0x00000a3a      0x2c9 drivers/ubx_tx.o
+ .debug_info    0x00000d03      0x4ba main.o
 
-.debug_abbrev   0x00000000      0xa47
+.debug_abbrev   0x00000000      0xaee
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2      0x13c drivers/gps_cfg.o
- .debug_abbrev  0x000006de      0x171 drivers/uart.o
- .debug_abbrev  0x0000084f      0x1f8 main.o
+ .debug_abbrev  0x000005a2       0xd1 drivers/gps_cfg.o
+ .debug_abbrev  0x00000673      0x171 drivers/uart.o
+ .debug_abbrev  0x000007e4      0x112 drivers/ubx_tx.o
+ .debug_abbrev  0x000008f6      0x1f8 main.o
 
-.debug_line     0x00000000      0x788
+.debug_line     0x00000000      0x84a
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x134 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000134      0x1be drivers/gps_cfg.o
- .debug_line    0x000002f2      0x177 drivers/uart.o
- .debug_line    0x00000469      0x31f main.o
+ .debug_line    0x00000134      0x121 drivers/gps_cfg.o
+ .debug_line    0x00000255      0x177 drivers/uart.o
+ .debug_line    0x000003cc      0x15f drivers/ubx_tx.o
+ .debug_line    0x0000052b      0x31f main.o
 
-.debug_frame    0x00000000      0x1b0
+.debug_frame    0x00000000      0x1d4
  *(.debug_frame)
- .debug_frame   0x00000000       0x9c drivers/gps_cfg.o
- .debug_frame   0x0000009c       0xa0 drivers/uart.o
- .debug_frame   0x0000013c       0x74 main.o
+ .debug_frame   0x00000000       0x54 drivers/gps_cfg.o
+ .debug_frame   0x00000054       0xa0 drivers/uart.o
+ .debug_frame   0x000000f4       0x6c drivers/ubx_tx.o
+ .debug_frame   0x00000160       0x74 main.o
 
-.debug_str      0x00000000      0x502
+.debug_str      0x00000000      0x524
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x1b5 drivers/gps_cfg.o
-                                0x1f1 (size before relaxing)
- .debug_str     0x000003bd       0x88 drivers/uart.o
+ .debug_str     0x00000208      0x199 drivers/gps_cfg.o
+                                0x1d5 (size before relaxing)
+ .debug_str     0x000003a1       0x9d drivers/uart.o
                                 0x213 (size before relaxing)
- .debug_str     0x00000445       0xbd main.o
+ .debug_str     0x0000043e       0x29 drivers/ubx_tx.o
+                                0x1af (size before relaxing)
+ .debug_str     0x00000467       0xbd main.o
                                 0x27d (size before relaxing)
 
 .debug_loc      0x00000000      0x70b
  *(.debug_loc)
- .debug_loc     0x00000000      0x2a9 drivers/gps_cfg.o
- .debug_loc     0x000002a9      0x17f drivers/uart.o
+ .debug_loc     0x00000000       0xf0 drivers/gps_cfg.o
+ .debug_loc     0x000000f0      0x17f drivers/uart.o
+ .debug_loc     0x0000026f      0x1b9 drivers/ubx_tx.o
  .debug_loc     0x00000428      0x2e3 main.o
 
 .debug_macinfo
@@ -542,11 +645,12 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xa0
+.debug_ranges   0x00000000       0xb0
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x28 drivers/gps_cfg.o
- .debug_ranges  0x00000028       0x30 drivers/uart.o
- .debug_ranges  0x00000058       0x48 main.o
+ .debug_ranges  0x00000000       0x20 drivers/gps_cfg.o
+ .debug_ranges  0x00000020       0x30 drivers/uart.o
+ .debug_ranges  0x00000050       0x18 drivers/ubx_tx.o
+ .debug_ranges  0x00000068       0x48 main.o
 
 .debug_macro
  *(.debug_macro)
