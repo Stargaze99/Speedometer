@@ -32,6 +32,4 @@ void ubx_ver_poll(void);
 /* Mata in bytes från UART (kalla för varje mottaget byte) */
 void ubx_ver_parse_byte(uint8_t b);
 
-
-
 #endif /* UBX_VER_H_ */

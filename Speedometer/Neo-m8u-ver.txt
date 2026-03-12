@@ -1,0 +1,7 @@
+ROM BASE 2.01 (75331)
+
+FWVER=UDR 1.00 (firmware dead reckoning)
+
+PROTVER=19.00 (protocol version)
+
+GPS;GLO;GAL;BDS (support)
