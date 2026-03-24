@@ -7,54 +7,60 @@
 
 #include "config.h"
 #include "uart.h"
-#include "gps_cfg.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <string.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include <util/delay.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdbool.h>
 
-/* NMEA radbuffer */
-#define LINE_BUF_SIZE 160
+#define LINE_BUF_SIZE 128
+#define NMEA_STORE_SIZE 98 /*96+2 byte för overload*/
+
 static char line_buf[LINE_BUF_SIZE];
 static uint8_t line_pos = 0;
+static uint8_t in_sentence = 0;
+
+/* Exempel: separata “senaste”-buffers */
+static char rmc_buf[NMEA_STORE_SIZE];
+static char gga_buf[NMEA_STORE_SIZE];
+static char vtg_buf[NMEA_STORE_SIZE];
+
+static inline void led_on(uint8_t pd)     { PORTD |=  (1 << pd); }
+static inline void led_off(uint8_t pd)    { PORTD &= ~(1 << pd); }
+static inline void led_toggle(uint8_t pd) { PIND   =  (1 << pd); }
 
 static void leds_init(void)
 {
-    /* PD2..PD7 som output (LED). PD0/PD1 lämnas till UART. */
-    DDRD |= 0b11111100;
+    /* PD2, PD3, PD6 som output */
+    DDRD |= (1 << PD2) | (1 << PD3) | (1 << PD6);
 
-    /* Pull-up på RX (PD0) så pinnen inte flyter om kabel glappar */
+    /* Start: stabilt läge */
+    led_on(PD6);
+    led_off(PD2);
+    led_off(PD3);
+
+    /* Pull-up på RX (PD0) om du vill */
     PORTD |= (1 << PD0);
 }
 
-static void led_toggle(uint8_t pd_pin)
+static void copy_sentence(char *dst, const char *src)
 {
-    /* AVR: skriva 1 till PINx togglar output */
-    PIND = (1 << pd_pin);
+    strncpy(dst, src, NMEA_STORE_SIZE - 1);
+    dst[NMEA_STORE_SIZE - 1] = '\0';
 }
 
-static void led_set(uint8_t pd_pin, bool on)
+static void store_sentence(const char *s)
 {
-    if (on)  PORTD |=  (1 << pd_pin);
-    else     PORTD &= ~(1 << pd_pin);
-}
-
-/* RMC status är fält 2: $GNRMC,<time>,<A/V>,... */
-static char rmc_status_char(const char *line)
-{
-    uint8_t commas = 0;
-    for (uint16_t i = 0; line[i] != '\0'; i++) {
-        if (line[i] == ',') {
-            commas++;
-            if (commas == 2) {
-                return line[i + 1]; /* 'A' eller 'V' */
-            }
-        }
+    if (!strncmp(s, "$GNRMC", 6) || !strncmp(s, "$GPRMC", 6)) {
+        copy_sentence(rmc_buf, s);
+        } else if (!strncmp(s, "$GNGGA", 6) || !strncmp(s, "$GPGGA", 6)) {
+        copy_sentence(gga_buf, s);
+        } else if (!strncmp(s, "$GNVTG", 6) || !strncmp(s, "$GPVTG", 6)) {
+        copy_sentence(vtg_buf, s);
     }
-    return '?';
+    /* Lägg till fler om du vill: GSA/GSV/GLL osv */
 }
 
 int main(void)
@@ -62,77 +68,70 @@ int main(void)
     leds_init();
 
     uart0_init(UART0_BAUD);
-    sei(); /* behövs för att ISR i uart.c ska köras */
-
-    /* Start: blinka PD7 tre gånger */
-    for (uint8_t i = 0; i < 3; i++) {
-        led_toggle(PD7);
-        _delay_ms(150);
-        led_toggle(PD7);
-        _delay_ms(150);
-    }
-    
     gps_cfg_profile(1);
-
-    uint16_t hb = 0;
-    uint8_t byte_div = 0; /* gör PD2 blink synlig (inte flimmer) */
+    sei();
 
     while (1) {
         uint8_t b;
 
-        /* PD6 = heartbeat (programmet lever) */
-        hb++;
-        if (hb >= 200) {          /* ~200 ms */
-            hb = 0;
-            led_toggle(PD6);
-        }
-
-        /* Läs bytes från ringbuffer (fylls av ISR) */
         while (uart0_read_nonblocking(&b)) {
 
-            /* PD2: blink ibland när bytes kommer (inte varje byte) */
-            byte_div++;
-            if ((byte_div & 0x1F) == 0) { /* var 32:e byte */
-                led_toggle(PD2);
-            }
-
-            /* NMEA brukar vara \r\n */
             if (b == '\r') {
                 continue;
             }
 
-            if (b == '\n') {
-                /* Hel rad klar */
-                line_buf[line_pos] = '\0';
+            /* Start på ny mening */
+            if (b == '$') {
+                in_sentence = 1;
                 line_pos = 0;
+                line_buf[line_pos++] = '$';
 
-                /* PD3: rad klar */
-                led_toggle(PD3);
+                /* PD2 ON = tar emot mening */
+                led_on(PD2);
 
-                /* PD4: raden börjar med '$' (NMEA) */
-                if (line_buf[0] == '$') {
-                    led_toggle(PD4);
-                }
+                /* PD6 OFF = inte stabilt (mening pågår) */
+                led_off(PD6);
 
-                /* PD5: RMC? (NEO-8 brukar vara GN) */
-                bool is_rmc = (strncmp(line_buf, "$GNRMC", 6) == 0) ||
-                (strncmp(line_buf, "$GPRMC", 6) == 0);
-                if (is_rmc) {
-                    led_toggle(PD5);
+                continue;
+            }
 
-                    /* PD7 ON om fix är valid (A), OFF annars */
-                    led_set(PD7, (rmc_status_char(line_buf) == 'A'));
-                }
+            /* Ignorera allt tills vi sett '$' */
+            if (!in_sentence) {
+                continue;
+            }
 
+            /* Slut på mening */
+            if (b == '\n') {
+                line_buf[line_pos] = '\0';
+                in_sentence = 0;
+
+                /* Copy/överföring (kritisk sektion) */
+                led_off(PD6);        /* OFF medan vi skriver arrays */
+                led_toggle(PD3);     /* blink start */
+
+                store_sentence(line_buf);
+
+                led_toggle(PD3);     /* blink slut */
+
+                /* PD2 OFF = meningen färdig */
+                led_off(PD2);
+
+                /* PD6 ON = stabilt läge (pausa debugger här) */
+                led_on(PD6);
+
+                line_pos = 0;
+                continue;
+            }
+
+            /* Bygg line_buf */
+            if (line_pos < (LINE_BUF_SIZE - 1)) {
+                line_buf[line_pos++] = (char)b;
                 } else {
-                /* Bygg rad */
-                if (line_pos < (LINE_BUF_SIZE - 1)) {
-                    line_buf[line_pos++] = (char)b;
-                    } else {
-                    /* Overflow: kasta raden */
-                    line_pos = 0;
-                    led_toggle(PD5); /* använd PD5 som "overflow-varning" */
-                }
+                /* Overflow: droppa meningen */
+                in_sentence = 0;
+                line_pos = 0;
+                led_off(PD2);
+                led_on(PD6);
             }
         }
 
