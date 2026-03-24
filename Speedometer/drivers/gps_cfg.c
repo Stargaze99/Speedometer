@@ -85,10 +85,10 @@ void gps_cfg_profile(uint8_t profile){
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GSV_ID, 0); /* GSV OFF */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GSA_ID, 0); /* GSA OFF */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GLL_ID, 0); /* GLL OFF */
+        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_VTG_ID, 0); /* VTG OFF */
 
         /* 2) Slå på de meningar vi faktiskt vill använda */
-        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_RMC_ID, 1); /* RMC ON (1x per nav) */
-        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_VTG_ID, 1); /* VTG ON (1x per nav) */
+        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_RMC_ID, 1); /* RMC ON */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GGA_ID, 1); /* GGA ON */
     }
 }
