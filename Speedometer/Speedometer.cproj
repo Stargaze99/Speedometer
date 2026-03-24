@@ -135,10 +135,22 @@
     <Compile Include="drivers\ubx_ver.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="functions\data.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="functions\nmea_parse.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\config.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\data.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\gps_cfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\nmea_parse.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\uart.h">

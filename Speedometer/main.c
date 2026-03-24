@@ -7,6 +7,8 @@
 
 #include "config.h"
 #include "uart.h"
+#include "data.h"
+#include "nmea_parse.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -25,7 +27,7 @@ static uint8_t in_sentence = 0;
 /* Exempel: separata “senaste”-buffers */
 static char rmc_buf[NMEA_STORE_SIZE];
 static char gga_buf[NMEA_STORE_SIZE];
-static char vtg_buf[NMEA_STORE_SIZE];
+/*static char vtg_buf[NMEA_STORE_SIZE];*/
 
 static inline void led_on(uint8_t pd)     { PORTD |=  (1 << pd); }
 static inline void led_off(uint8_t pd)    { PORTD &= ~(1 << pd); }
@@ -57,9 +59,9 @@ static void store_sentence(const char *s)
         copy_sentence(rmc_buf, s);
         } else if (!strncmp(s, "$GNGGA", 6) || !strncmp(s, "$GPGGA", 6)) {
         copy_sentence(gga_buf, s);
-        } else if (!strncmp(s, "$GNVTG", 6) || !strncmp(s, "$GPVTG", 6)) {
+        }/* else if (!strncmp(s, "$GNVTG", 6) || !strncmp(s, "$GPVTG", 6)) {
         copy_sentence(vtg_buf, s);
-    }
+    }*/
     /* Lägg till fler om du vill: GSA/GSV/GLL osv */
 }
 
@@ -68,6 +70,7 @@ int main(void)
     leds_init();
 
     uart0_init(UART0_BAUD);
+    data_init();
     gps_cfg_profile(1);
     sei();
 
@@ -110,6 +113,7 @@ int main(void)
                 led_toggle(PD3);     /* blink start */
 
                 store_sentence(line_buf);
+                nmea_parse_line(line_buf);
 
                 led_toggle(PD3);     /* blink slut */
 

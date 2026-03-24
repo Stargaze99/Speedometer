@@ -10,5 +10,9 @@ drivers\ubx_tx.c
 
 drivers\ubx_ver.c
 
+functions\data.c
+
+functions\nmea_parse.c
+
 main.c
 
