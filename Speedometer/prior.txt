@@ -1,0 +1,29 @@
+PRIORITERING 1 - MÅSTE HA
+
+    - GPS giltig eller ogiltig status
+    - Latitude och longitude
+    - Tid och datum
+    - Hastighet
+    - Tydliga variabler för senaste giltiga värden
+    - Visning på display (OLED)
+        - SPI
+
+PRIORITERING 2 - BRA ATT HA
+
+    - Altitud
+    - Lutning uppför eller nedför
+    - Riktning vid rörelse
+    - Antal satelliter
+
+PRIORITERING 3 - SENARE ELLER SVÅRARE
+
+    - Använd riktning för en enkel kompass
+    - UI med ikoner
+    - Interaktiv UI med config-funktion
+        - Rotary knob som knappt
+    - Filtrering och utjämning av data
+    - Full minnesoptimering
+    - Extra NMEA-data som inte behövs direkt
+    - Stopwatch för att logga resa
+    - Visa medelhastighet
+    - UDR för tunnle eller ingen signal
