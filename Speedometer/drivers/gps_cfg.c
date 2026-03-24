@@ -11,11 +11,11 @@
 /* u-blox NMEA message class */
 #define UBX_NMEA_CLASS  0xF0
 
-/* u-blox NMEA message IDs (msgID n‰r msgClass = 0xF0)
+/* u-blox NMEA message IDs (msgID n√§r msgClass = 0xF0)
    0x00 = GGA  Global Positioning System Fix Data (tid, fix quality, alt)
-   0x01 = GLL  Geographic Position ñ Latitude/Longitude
+   0x01 = GLL  Geographic Position ‚Äì Latitude/Longitude
    0x02 = GSA  GNSS DOP and Active Satellites (fix type, DOP)
-   0x03 = GSV  GNSS Satellites in View (lÂnga, mÂnga rader)
+   0x03 = GSV  GNSS Satellites in View (l√•nga, m√•nga rader)
    0x04 = RMC  Recommended Minimum (tid, datum, speed, course)
    0x05 = VTG  Course Over Ground and Ground Speed
 */
@@ -51,11 +51,11 @@ static void ubx_send(uint8_t cls, uint8_t id, uint16_t len, const uint8_t *paylo
     uart0_write(id);
     ubx_checksum(id, &cka, &ckb);
     
-    / *LÂg* /
+    / *L√•g* /
     uart0_write((uint8_t) (len & 0xFF));
     ubx_checksum((uint8_t) (len & 0xFF), &cka, &ckb);
     
-    / *hˆg* /
+    / *h√∂g* /
     uart0_write((uint8_t) (len >> 8));
     ubx_checksum((uint8_t) (len >> 8), &cka, &ckb);
     
@@ -81,13 +81,13 @@ void gps_cfg_profile(uint8_t profile){
     
     if (profile == 1)
     {
-        /* 1) St‰ng av "spam" fˆrst sÂ UART blir lugn */
+        /* 1) St√§ng av "spam" f√∂rst s√• UART blir lugn */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GSV_ID, 0); /* GSV OFF */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GSA_ID, 0); /* GSA OFF */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GLL_ID, 0); /* GLL OFF */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_VTG_ID, 0); /* VTG OFF */
 
-        /* 2) SlÂ pÂ de meningar vi faktiskt vill anv‰nda */
+        /* 2) Sl√• p√• de meningar vi faktiskt vill anv√§nda */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_RMC_ID, 1); /* RMC ON */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GGA_ID, 1); /* GGA ON */
     }

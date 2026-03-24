@@ -158,16 +158,16 @@ void gps_cfg_profile(uint8_t profile){
   f0:	61 e0       	ldi	r22, 0x01	; 1
   f2:	80 ef       	ldi	r24, 0xF0	; 240
   f4:	0e 94 53 00 	call	0xa6	; 0xa6 <ubx_cfg_msg>
-
-        /* 2) Slå på de meningar vi faktiskt vill använda */
-        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_RMC_ID, 1); /* RMC ON (1x per nav) */
-  f8:	41 e0       	ldi	r20, 0x01	; 1
-  fa:	64 e0       	ldi	r22, 0x04	; 4
+        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_VTG_ID, 0); /* VTG OFF */
+  f8:	40 e0       	ldi	r20, 0x00	; 0
+  fa:	65 e0       	ldi	r22, 0x05	; 5
   fc:	80 ef       	ldi	r24, 0xF0	; 240
   fe:	0e 94 53 00 	call	0xa6	; 0xa6 <ubx_cfg_msg>
-        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_VTG_ID, 1); /* VTG ON (1x per nav) */
+
+        /* 2) Slå på de meningar vi faktiskt vill använda */
+        ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_RMC_ID, 1); /* RMC ON */
  102:	41 e0       	ldi	r20, 0x01	; 1
- 104:	65 e0       	ldi	r22, 0x05	; 5
+ 104:	64 e0       	ldi	r22, 0x04	; 4
  106:	80 ef       	ldi	r24, 0xF0	; 240
  108:	0e 94 53 00 	call	0xa6	; 0xa6 <ubx_cfg_msg>
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GGA_ID, 1); /* GGA ON */

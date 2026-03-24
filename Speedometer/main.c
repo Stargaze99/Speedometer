@@ -16,13 +16,13 @@
 #include <stdbool.h>
 
 #define LINE_BUF_SIZE 128
-#define NMEA_STORE_SIZE 98 /*96+2 byte fˆr overload*/
+#define NMEA_STORE_SIZE 98 /*96+2 byte f√∂r overload*/
 
 static char line_buf[LINE_BUF_SIZE];
 static uint8_t line_pos = 0;
 static uint8_t in_sentence = 0;
 
-/* Exempel: separata ìsenasteî-buffers */
+/* Exempel: separata ‚Äúsenaste‚Äù-buffers */
 static char rmc_buf[NMEA_STORE_SIZE];
 static char gga_buf[NMEA_STORE_SIZE];
 static char vtg_buf[NMEA_STORE_SIZE];
@@ -36,12 +36,12 @@ static void leds_init(void)
     /* PD2, PD3, PD6 som output */
     DDRD |= (1 << PD2) | (1 << PD3) | (1 << PD6);
 
-    /* Start: stabilt l‰ge */
+    /* Start: stabilt l√§ge */
     led_on(PD6);
     led_off(PD2);
     led_off(PD3);
 
-    /* Pull-up pÂ RX (PD0) om du vill */
+    /* Pull-up p√• RX (PD0) om du vill */
     PORTD |= (1 << PD0);
 }
 
@@ -60,7 +60,7 @@ static void store_sentence(const char *s)
         } else if (!strncmp(s, "$GNVTG", 6) || !strncmp(s, "$GPVTG", 6)) {
         copy_sentence(vtg_buf, s);
     }
-    /* L‰gg till fler om du vill: GSA/GSV/GLL osv */
+    /* L√§gg till fler om du vill: GSA/GSV/GLL osv */
 }
 
 int main(void)
@@ -80,7 +80,7 @@ int main(void)
                 continue;
             }
 
-            /* Start pÂ ny mening */
+            /* Start p√• ny mening */
             if (b == '$') {
                 in_sentence = 1;
                 line_pos = 0;
@@ -89,7 +89,7 @@ int main(void)
                 /* PD2 ON = tar emot mening */
                 led_on(PD2);
 
-                /* PD6 OFF = inte stabilt (mening pÂgÂr) */
+                /* PD6 OFF = inte stabilt (mening p√•g√•r) */
                 led_off(PD6);
 
                 continue;
@@ -100,12 +100,12 @@ int main(void)
                 continue;
             }
 
-            /* Slut pÂ mening */
+            /* Slut p√• mening */
             if (b == '\n') {
                 line_buf[line_pos] = '\0';
                 in_sentence = 0;
 
-                /* Copy/ˆverfˆring (kritisk sektion) */
+                /* Copy/√∂verf√∂ring (kritisk sektion) */
                 led_off(PD6);        /* OFF medan vi skriver arrays */
                 led_toggle(PD3);     /* blink start */
 
@@ -113,10 +113,10 @@ int main(void)
 
                 led_toggle(PD3);     /* blink slut */
 
-                /* PD2 OFF = meningen f‰rdig */
+                /* PD2 OFF = meningen f√§rdig */
                 led_off(PD2);
 
-                /* PD6 ON = stabilt l‰ge (pausa debugger h‰r) */
+                /* PD6 ON = stabilt l√§ge (pausa debugger h√§r) */
                 led_on(PD6);
 
                 line_pos = 0;
