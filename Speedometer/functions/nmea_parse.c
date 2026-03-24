@@ -395,7 +395,7 @@ static void parse_rmc_fields(char *fields[], uint8_t count)
 
         gps_data.speed_kmh_x10 = (uint16_t)((speed_knots_x1000 * 1852UL + 50000UL) / 100000UL);
 
-        if (gps_data.speed_kmh_x10 < 5)
+        if (gps_data.speed_kmh_x10 < 10)
         {
             gps_data.speed_kmh_x10 = 0;
         }

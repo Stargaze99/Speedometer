@@ -1611,8 +1611,8 @@ static void parse_rmc_fields(char *fields[], uint8_t count)
  780:	30 93 77 04 	sts	0x0477, r19	; 0x800477 <gps_data+0x13>
  784:	20 93 76 04 	sts	0x0476, r18	; 0x800476 <gps_data+0x12>
 
-        if (gps_data.speed_kmh_x10 < 5)
- 788:	25 30       	cpi	r18, 0x05	; 5
+        if (gps_data.speed_kmh_x10 < 10)
+ 788:	2a 30       	cpi	r18, 0x0A	; 10
  78a:	31 05       	cpc	r19, r1
  78c:	20 f4       	brcc	.+8      	; 0x796 <parse_rmc_fields+0x7c>
         {
