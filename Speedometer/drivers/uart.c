@@ -14,7 +14,7 @@
 
 
 /* RX ringbuffer-storlek: måste vara 2^n (64, 128, 256...) */
-#define RX_BUF_SIZE 512
+#define RX_BUF_SIZE 256
 
 static volatile uint8_t rx_buf[RX_BUF_SIZE];
 static volatile uint8_t rx_head = 0;
