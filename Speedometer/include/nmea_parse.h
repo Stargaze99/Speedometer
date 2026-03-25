@@ -9,6 +9,6 @@
 #ifndef NMEA_PARSE_H
 #define NMEA_PARSE_H
 
-void nmea_parse_line(const char *line);
+void nmea_parse_line(char *line);
 
 #endif /* NMEA_PARSE_H_ */

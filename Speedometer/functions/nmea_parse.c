@@ -11,14 +11,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#define NMEA_PARSE_LINE_MAX   128
 #define NMEA_MAX_FIELDS       20
 
 static uint8_t split_nmea_fields(char *line, char *fields[], uint8_t max_fields);
 static uint8_t sentence_is_type(const char *type, const char *suffix);
 
 static uint8_t parse_u8(const char *s);
-static uint16_t parse_u16(const char *s);
 static uint16_t parse_decimal_x1000(const char *s);
 static uint16_t parse_decimal_rounded_u16(const char *s);
 static int16_t parse_decimal_rounded_s16(const char *s);
@@ -31,9 +29,8 @@ static void parse_lon_dmm(const char *value, const char *dir, coord_dmm_t *lon);
 static void parse_rmc_fields(char *fields[], uint8_t count);
 static void parse_gga_fields(char *fields[], uint8_t count);
 
-void nmea_parse_line(const char *line)
+void nmea_parse_line(char *line)
 {
-    char temp[NMEA_PARSE_LINE_MAX];
     char *fields[NMEA_MAX_FIELDS];
     uint8_t count;
 
@@ -42,10 +39,7 @@ void nmea_parse_line(const char *line)
         return;
     }
 
-    strncpy(temp, line, sizeof(temp) - 1);
-    temp[sizeof(temp) - 1] = '\0';
-
-    count = split_nmea_fields(temp, fields, NMEA_MAX_FIELDS);
+    count = split_nmea_fields(line, fields, NMEA_MAX_FIELDS);
 
     if (count == 0)
     {
@@ -138,23 +132,6 @@ static uint8_t parse_u8(const char *s)
     return (uint8_t)value;
 }
 
-static uint16_t parse_u16(const char *s)
-{
-    uint16_t value = 0;
-
-    if (s == 0)
-    {
-        return 0;
-    }
-
-    while ((*s >= '0') && (*s <= '9'))
-    {
-        value = (uint16_t)(value * 10U + (uint16_t)(*s - '0'));
-        s++;
-    }
-
-    return value;
-}
 
 static uint16_t parse_decimal_x1000(const char *s)
 {
@@ -410,6 +387,10 @@ static void parse_rmc_fields(char *fields[], uint8_t count)
     {
         parse_date_dmy(fields[9], &gps_data.date);
     }
+    
+    /* Count parsed RMC message */
+    gps_data.debug.rmc.total_count++;
+    
 }
 
 static void parse_gga_fields(char *fields[], uint8_t count)
@@ -432,4 +413,8 @@ static void parse_gga_fields(char *fields[], uint8_t count)
     {
         gps_data.altitude_m = parse_decimal_rounded_s16(fields[9]);
     }
+    
+    /* Count parsed GGA message */
+    gps_data.debug.gga.total_count++;
+    
 }

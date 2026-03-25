@@ -41,6 +41,28 @@ typedef struct
 
 typedef struct
 {
+    /* Total number of parsed messages */
+    uint32_t total_count;
+
+    /* Previous total count, used later by timer */
+    /* to calculate messages per second */
+    uint32_t prev_count;
+
+    /* Number of messages received during last 1 second */
+    uint8_t per_second;
+
+} nmea_count_t;
+
+typedef struct
+{
+    /* Separate debug counters for each message type */
+    nmea_count_t rmc;
+    nmea_count_t gga;
+
+} gps_debug_t;
+
+typedef struct
+{
     /* GPS status */
     uint8_t gps_valid;
     uint8_t fix_quality;
@@ -63,6 +85,8 @@ typedef struct
 
     /* Course in degrees */
     uint16_t course_deg;
+    
+    gps_debug_t debug;
 
 } gps_data_t;
 

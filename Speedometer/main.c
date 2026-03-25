@@ -9,6 +9,7 @@
 #include "uart.h"
 #include "data.h"
 #include "nmea_parse.h"
+#include "sys_time.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -68,9 +69,12 @@ static void store_sentence(const char *s)
 int main(void)
 {
     leds_init();
-
+    
+    uint32_t gps_rate_last_ms = 0;
+    
     uart0_init(UART0_BAUD);
     data_init();
+    sys_time_init();
     gps_cfg_profile(1);
     sei();
 
@@ -138,7 +142,22 @@ int main(void)
                 led_on(PD6);
             }
         }
+        
+        /* Update debug counters every 1000 ms */
+        if (elapsed_ms(&gps_rate_last_ms, 1000))
+        {
+            gps_data.debug.rmc.per_second =
+            (uint8_t)(gps_data.debug.rmc.total_count - gps_data.debug.rmc.prev_count);
 
-        _delay_ms(1);
+            gps_data.debug.rmc.prev_count =
+            gps_data.debug.rmc.total_count;
+
+            gps_data.debug.gga.per_second =
+            (uint8_t)(gps_data.debug.gga.total_count - gps_data.debug.gga.prev_count);
+
+            gps_data.debug.gga.prev_count =
+            gps_data.debug.gga.total_count;
+        }
+        /*_delay_ms(1);*/
     }
 }

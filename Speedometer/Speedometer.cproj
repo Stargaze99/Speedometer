@@ -126,6 +126,9 @@
     <Compile Include="drivers\gps_cfg.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\sys_time.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\uart.c">
       <SubType>compile</SubType>
     </Compile>
@@ -151,6 +154,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\nmea_parse.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\sys_time.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\uart.h">

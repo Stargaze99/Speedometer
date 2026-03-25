@@ -4,6 +4,8 @@
 
 drivers\gps_cfg.c
 
+drivers\sys_time.c
+
 drivers\uart.c
 
 drivers\ubx_tx.c

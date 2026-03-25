@@ -45,4 +45,14 @@ void data_init(void)
 
     /* Course */
     gps_data.course_deg = 0;
+
+    /* Debug counters for RMC */
+    gps_data.debug.rmc.total_count = 0;
+    gps_data.debug.rmc.prev_count  = 0;
+    gps_data.debug.rmc.per_second  = 0;
+
+    /* Debug counters for GGA */
+    gps_data.debug.gga.total_count = 0;
+    gps_data.debug.gga.prev_count  = 0;
+    gps_data.debug.gga.per_second  = 0;
 }
