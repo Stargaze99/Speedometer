@@ -77,6 +77,24 @@ static void ubx_cfg_msg(uint8_t msgClass, uint8_t msgID, uint8_t rate)
     ubx_send(0x06, 0x01, 3, p);
 }
 
+void ubx_ver_check(void){
+    /* UBX-MON-VER poll: class 0x0A id 0x04, length=0, no payload */
+    ubx_send(0x0A, 0x04, 0, 0);
+}
+
+static void ubx_cfg_rate(uint16_t measRate, uint16_t navRate, uint16_t timeRef){
+    uint8_t p[6];
+
+    p[0] = (uint8_t)(measRate & 0xFF);
+    p[1] = (uint8_t)(measRate >> 8);
+    p[2] = (uint8_t)(navRate & 0xFF);
+    p[3] = (uint8_t)(navRate >> 8);
+    p[4] = (uint8_t)(timeRef & 0xFF);
+    p[5] = (uint8_t)(timeRef >> 8);
+
+    ubx_send(0x06, 0x08, 6, p);
+}
+
 void gps_cfg_profile(uint8_t profile){
     
     if (profile == 1)
@@ -90,11 +108,9 @@ void gps_cfg_profile(uint8_t profile){
         /* 2) Slå på de meningar vi faktiskt vill använda */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_RMC_ID, 1); /* RMC ON */
         ubx_cfg_msg(UBX_NMEA_CLASS, NMEA_GGA_ID, 1); /* GGA ON */
+        
+        /*2 Hz*/
+        ubx_cfg_rate(500,1,1);
     }
 }
 
-
-void ubx_ver_check(void){
-    /* UBX-MON-VER poll: class 0x0A id 0x04, length=0, no payload */
-    ubx_send(0x0A, 0x04, 0, 0);
-}

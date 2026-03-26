@@ -16,6 +16,7 @@
 
 void gps_cfg_profile(uint8_t profile);
 
+static void ubx_cfg_rate(uint16_t measRate, uint16_t navRate, uint16_t timeRef);
 
 
 #endif /* GPS_CFG_H_ */

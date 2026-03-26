@@ -10,6 +10,7 @@
 #include "data.h"
 #include "nmea_parse.h"
 #include "sys_time.h"
+#include "gps_cfg.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
