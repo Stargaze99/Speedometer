@@ -4,6 +4,8 @@
 
 drivers\gps_cfg.c
 
+drivers\spi.c
+
 drivers\sys_time.c
 
 drivers\uart.c

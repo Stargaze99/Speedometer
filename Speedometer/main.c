@@ -11,6 +11,7 @@
 #include "nmea_parse.h"
 #include "sys_time.h"
 #include "gps_cfg.h"
+#include "spi.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -74,6 +75,7 @@ int main(void)
     uint32_t gps_rate_last_ms = 0;
     
     uart0_init(UART0_BAUD);
+    spi_init();
     data_init();
     sys_time_init();
     gps_cfg_profile(1);
