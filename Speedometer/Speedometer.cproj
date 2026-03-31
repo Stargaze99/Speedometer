@@ -147,6 +147,9 @@
     <Compile Include="functions\nmea_parse.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="functions\oled.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\config.h">
       <SubType>compile</SubType>
     </Compile>
@@ -157,6 +160,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\nmea_parse.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\oled.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\spi.h">

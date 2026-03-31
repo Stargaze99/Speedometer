@@ -12,6 +12,7 @@
 #include "sys_time.h"
 #include "gps_cfg.h"
 #include "spi.h"
+#include "oled.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -76,11 +77,13 @@ int main(void)
     uint32_t gps_rate_last_ms = 0;
     
     uart0_init(UART0_BAUD);
-    spi_init();
-    data_init();
     sys_time_init();
+    data_init();
+    spi_init();
+    oled_init();
     gps_cfg_profile(1);
     sei();
+    oled_clear();
 
     while (1) {
         uint8_t b;
@@ -150,6 +153,8 @@ int main(void)
             }
         }
         
+
+        
         /* Update debug counters every 1000 ms */
         if (elapsed_ms(&gps_rate_last_ms, 1000))
         {
@@ -173,5 +178,18 @@ int main(void)
             gps_data.debug.main_loop.total_count;
         }
         /*_delay_ms(1);*/
+        
+
+        oled_set_pos(0, 0);
+        oled_write_string("GPS TEST");
+
+        oled_set_pos(2, 0);
+        oled_write_string("HELLO");
+
+        oled_set_pos(4, 0);
+        oled_write_string("SPD 12.3");
+
+        oled_set_pos(6, 0);
+        oled_write_string("TIME 15:18");
     }
 }
