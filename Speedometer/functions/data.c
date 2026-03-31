@@ -55,4 +55,9 @@ void data_init(void)
     gps_data.debug.gga.total_count = 0;
     gps_data.debug.gga.prev_count  = 0;
     gps_data.debug.gga.per_second  = 0;
+    
+    /* Debug counter for main loop cycles */
+    gps_data.debug.main_loop.total_count = 0;
+    gps_data.debug.main_loop.prev_count  = 0;
+    gps_data.debug.main_loop.per_second  = 0;
 }

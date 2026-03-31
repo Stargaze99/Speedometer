@@ -72,6 +72,7 @@ int main(void)
 {
     leds_init();
     
+    
     uint32_t gps_rate_last_ms = 0;
     
     uart0_init(UART0_BAUD);
@@ -83,7 +84,10 @@ int main(void)
 
     while (1) {
         uint8_t b;
-
+        
+        /* Count one main loop cycle */
+        gps_data.debug.main_loop.total_count++;
+        
         while (uart0_read_nonblocking(&b)) {
 
             if (b == '\r') {
@@ -160,6 +164,13 @@ int main(void)
 
             gps_data.debug.gga.prev_count =
             gps_data.debug.gga.total_count;
+            
+            /* Main loop cycles per second */
+            gps_data.debug.main_loop.per_second =
+            gps_data.debug.main_loop.total_count - gps_data.debug.main_loop.prev_count;
+
+            gps_data.debug.main_loop.prev_count =
+            gps_data.debug.main_loop.total_count;
         }
         /*_delay_ms(1);*/
     }

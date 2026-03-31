@@ -55,10 +55,25 @@ typedef struct
 
 typedef struct
 {
+    /* Total number of main loop cycles */
+    uint32_t total_count;
+
+    /* Previous total count, used to calculate cycles per second */
+    uint32_t prev_count;
+
+    /* Number of main loop cycles during last 1 second */
+    uint32_t per_second;
+
+} loop_count_t;
+
+typedef struct
+{
     /* Separate debug counters for each message type */
     nmea_count_t rmc;
     nmea_count_t gga;
-
+    
+    /* Main loop cycle counter */
+    loop_count_t main_loop;
 } gps_debug_t;
 
 typedef struct
