@@ -10,6 +10,9 @@
 #define OLED_H_
 
 #include <stdint.h>
+/* OLED size */
+#define OLED_WIDTH     128
+#define OLED_PAGES     8
 
 /* Initialize OLED */
 void oled_init(void);
@@ -35,6 +38,11 @@ void oled_write_char(char c);
 /* Write zero-terminated string */
 void oled_write_string(const char *str);
 
+
+
+
+/* Clear 16-pixel high span across two pages */
+void oled_clear_span_16(uint8_t page, int16_t x, uint8_t width);
 
 
 #endif /* OLED_H_ */

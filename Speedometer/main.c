@@ -13,6 +13,7 @@
 #include "gps_cfg.h"
 #include "spi.h"
 #include "oled.h"
+#include "background.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -20,6 +21,28 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
+
+
+/* Airplane sprite  */
+/* 32 pixels wide, 16 pixels high */
+/* Top half = first 8 rows, bottom half = next 8 rows */
+
+static const uint8_t plane_top[32] =
+{
+    0x06, 0x0E, 0x9E, 0xFC, 0xFC, 0xF8, 0xF8, 0xF0,
+    0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF3, 0xF7, 0xFF,
+    0xFF, 0xFE, 0xFC, 0xFC, 0xF8, 0xF8, 0xF0, 0xF0,
+    0xF0, 0xF0, 0xE0, 0xE0, 0xC0, 0x80, 0x80, 0x00
+};
+
+
+static const uint8_t plane_bottom[32] =
+{
+    0x00, 0x03, 0x03, 0x01, 0x01, 0x00, 0x00, 0xC0,
+    0xE1, 0xF1, 0xFB, 0x7B, 0x3F, 0x3F, 0x1F, 0x1F,
+    0x1F, 0x0F, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
+    0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x03, 0x03
+};
 
 #define LINE_BUF_SIZE 128
 #define NMEA_STORE_SIZE 98 /*96+2 byte för overload*/
@@ -83,8 +106,13 @@ int main(void)
     oled_init();
     gps_cfg_profile(1);
     sei();
-    oled_clear();
-
+   
+   uint32_t bg_last_ms = 0;
+   
+   uint32_t cyclist_last_ms = 0;
+   uint8_t anim_frame = 0;
+   
+   
     while (1) {
         uint8_t b;
         
@@ -153,7 +181,6 @@ int main(void)
             }
         }
         
-
         
         /* Update debug counters every 1000 ms */
         if (elapsed_ms(&gps_rate_last_ms, 1000))
@@ -179,7 +206,30 @@ int main(void)
         }
         /*_delay_ms(1);*/
         
+        
+        /* Parallax background */
+        if (elapsed_ms(&bg_last_ms, 50)){
+            
+            /*bg_update_speed();*/
+            bg_speed_level = 2;
+            bg_draw();
+            
+            draw_gps_info();
+            }
+            
+        if (elapsed_ms(&cyclist_last_ms, 200))
+        {
+            anim_frame++;
+            if (anim_frame >= CYCLIST_FRAMES)
+            {
+                anim_frame = 0;
+            }
+        }
+        cyclist_draw_frame(anim_frame, 4, 4);
+        
 
+        
+/*
         oled_set_pos(0, 0);
         oled_write_string("GPS TEST");
 
@@ -187,9 +237,12 @@ int main(void)
         oled_write_string("HELLO");
 
         oled_set_pos(4, 0);
-        oled_write_string("SPD 12.3");
+        oled_write_string("0123456789");
 
         oled_set_pos(6, 0);
-        oled_write_string("TIME 15:18");
+        oled_write_string("ABCXYZ abcxyz");
+        
+        oled_set_pos(7, 0);
+        oled_write_string("!#¤%&/()=");*/
     }
 }

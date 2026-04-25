@@ -29,7 +29,7 @@
     <eraseonlaunchrule>1</eraseonlaunchrule>
     <EraseKey />
     <avrtool>com.atmel.avrdbg.tool.atmelice</avrtool>
-    <avrtoolserialnumber>J42700074445</avrtoolserialnumber>
+    <avrtoolserialnumber>J42700076174</avrtoolserialnumber>
     <avrdeviceexpectedsignature>0x1E950F</avrdeviceexpectedsignature>
     <com_atmel_avrdbg_tool_atmelice>
       <ToolOptions>
@@ -38,7 +38,7 @@
         <InterfaceName>debugWIRE</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
-      <ToolNumber>J42700074445</ToolNumber>
+      <ToolNumber>J42700076174</ToolNumber>
       <ToolName>Atmel-ICE</ToolName>
     </com_atmel_avrdbg_tool_atmelice>
     <avrtoolinterface>debugWIRE</avrtoolinterface>
@@ -141,7 +141,13 @@
     <Compile Include="drivers\ubx_ver.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="functions\background.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="functions\data.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="functions\font.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="functions\nmea_parse.c">
@@ -150,10 +156,16 @@
     <Compile Include="functions\oled.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\background.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\config.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\data.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\font.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\gps_cfg.h">
